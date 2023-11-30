@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/mybeerCode.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+  <title>แลกโค้ด</title>
+</head>
+
+<body style="background-image: url('https://media.discordapp.net/attachments/1175991933227782165/1179450150435958824/main.jpg')"onload="showMessage()">
+  <div class="empty-block"></div>
+         <div class="container">
+           <div class="form-container">
+            <form action="/submit" method="post" enctype="multipart/form-data">
+              <div class="form-group custom-input">
+                <label for="first_name" class="bg-font"><i>ชื่อ</i></label>
+                <input type="text" id="name" name="name" required />
+              </div>
+              <div class="form-group">
+                <label for="floatingaddress" class="bg-font"><i>นามสกุล</i></label>
+                <input type="text" id="surname" name="surname" required />
+              </div>
+              <div class="form-group">
+                <label for="telephone" class="bg-font">เบอร์โทร</label>
+                <input type="tel" id="phone" name="phone" maxlength="10" pattern="\d{10}" title="เบอร์โทรศัพท์ต้องมี 10 หลัก"
+                  required />
+              </div>
+              <div class="form-group">
+                <label for="floatingaddress" class="bg-font"><i>อายุ</i></label>
+                <input type="tel" id="age" name="age" maxlength="3" pattern="\d+" title="อายุ" required/>
+              </div>
+              <div class="form-group">
+                <label for="floatingaddress" class="bg-font"><i>ร้านค้า</i></label>
+                <input type="address" id="merchant" name="merchant" required />
+              </div>
+              <div class="form-group">
+                <label style="display: inline-block;" class="bg-font"><i>แนบรูป</i></label><label for="image"
+                  style="display: flex;justify-content: left;margin-left: 4rem;" for="fileInput">
+                  <img
+                    src="https://cdn.discordapp.com/attachments/1175991933227782165/1179451375428567150/add.png?ex=6579d4b1&is=65675fb1&hm=ac06f27fc914eb9f28af4e7991d972424c4d9eaacad2fa61e003b477467df383&"
+                    id="copyButton" alt="Icon" style="width: 40px; height: 40px; vertical-align: middle;margin-left: 20px;">
+                  <label for="img" class="ms-3 font" style="color: white;font-size: 16px; font-family: 'Prompt', sans-serif;">
+                    แนบรูปถ่ายความสนุก</label>
+                  <input type="file" id="image" name="image" style="display:none;" accept="image/*" required>
+                </label>
+              </div>
+                  <!-- Modal trigger -->
+                  <button type="submit" value="submit" name="submit-btn" class="submit-btn btn"
+                    style="color: rgb(255, 255, 255);font-size: 2rem; font-weight: 700;"><i>บันทึก</i></button>
+                  <div class="empty-block-bottom"></div>
+             </form>
+           </div>
+         </div>
+
+       <!-- The Modal -->
+       <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+  
+          <div class="modal-header">
+            <h2 class="title-modal" style="color: white;font-weight:700;">รับโค้ด LineMan Right</h2>
+            <span class="close">&times;</span>
+            <span class="close" id="closeButton">&times;</span>
+          </div>
+          <div class="modal-body">
+            <div class="showstatus" id="status"></div>
+            <div class="input-icon">
+              <input type="text" id="codeInput" class="modal-input">
+              <span class="icon" onclick="copyToClipboard()" style="cursor: pointer;" id="copycode">
+              <img src="https://cdn.discordapp.com/attachments/1175991933227782165/1179780092478631996/icons8-copy-64.png?ex=657b06d5&is=656891d5&hm=cd3b6c8511c8bed42766af11f652b98192eca3fb99ddd8dff96a0438ecdd440d&" 
+                  class="icon" 
+                  style="width: 24px; height: 24px;">
+              </span>
+            </div>
+           <div>
+            <button id="saveAndConfirmButton" class="custom-button" type="button" value="submit">บันทึกและยืนยัน</button>
+           </div>
+          <footer class="ft">หมายเหตุ :  ทางลูกค้าสามารถรับสิทธิ์ ได้ 1 ครั้งต่อการเข้าร่วมโครงการเท่านั้น
+          </footer>
+            <!-- ... other modal content ... -->
+          </div>
+       
+          <!-- ... -->
+        </div>
+      </div>
+
+       <script>
+        function showMessage() {
+          var msg = "{{ msg }}"; // Replace with the actual value from the backend
+          var code = "{{ code }}"; // Replace with the actual value from the backend
+        
+          if (msg !== "") {
+            var modal = document.getElementById('myModal');
+            var modalContent = document.querySelector('.modal-content');
+            var codeInput = document.getElementById('codeInput');
+            var statusElement = document.getElementById('status');
+        
+            // Center the modal vertically and horizontally
+            modal.style.display = 'flex';
+            modalContent.style.margin = 'auto';
+        
+            // Set the status message
+            statusElement.innerHTML = "Status Code: " + msg;
+        
+            // Set the code in the input field
+            codeInput.value = code; // This sets the input value correctly
+        
+            // Attach close event to all elements with class 'close'
+            var span = document.getElementsByClassName('close');
+            for (var i = 0; i < span.length; i++) {
+              span[i].onclick = function () {
+                modal.style.display = 'none';
+              }
+            }
+        
+            // Close modal if clicked outside of it
+            window.onclick = function (event) {
+              if (event.target == modal) {
+                modal.style.display = 'none';
+              }
+            }
+          }
+        }
+         
+        //นี่คือส่่วนของการดักตัวอักษรพิเศษของ ชื่่อ นามสกุล
+        document.addEventListener("DOMContentLoaded", function () {
+          // เลือกอินพุตสำหรับชื่อและนามสกุล
+          var firstNameInput = document.querySelector('input[name="name"]');
+          var lastNameInput = document.querySelector('input[name="surname"]');
+          // var submit = document.onclick('button[name"submit-btn"]');
+          // ฟังก์ชันตรวจสอบอินพุต
+          function validateInput(inputField) {
+            var isValid = /^[A-Za-zก-ฮะ-์]*$/.test(inputField.value);
+        
+            if (!isValid && inputField.value) {
+              swal("ไม่อนุญาต!", "ใส่เฉพาะตัวอักษร A-z และ ก-ฮ เท่าน้น!!", "error");
+              inputField.value = inputField.value.replace(/[^A-Za-zก-ฮะ-์]/g, "");
+            }
+          }
+        
+          // กำหนด Event Listener สำหรับอินพุต
+          if (firstNameInput) {
+            firstNameInput.oninput = function () {
+              validateInput(firstNameInput);
+            };
+          }
+          if (lastNameInput) {
+            lastNameInput.oninput = function () {
+              validateInput(lastNameInput);
+            };
+          }
+        
+          var telephoneInput = document.querySelector('input[name="phone"]');
+        
+          // Function to validate the telephone input
+          function validateTelephone(inputField) {
+            // Remove any characters that are not digits
+            var value = inputField.value.replace(/\D/g, "");
+        
+            // Check if the value is 10 digits long
+            if (value.length !== 10) {
+              swal("แจ้งเตือน!", "เบอร์โทรศัพท์ต้องมี 10 หลัก!", "error");
+              inputField.value = value.slice(0, 10); // Ensure the value is not longer than 10 digits
+            } else {
+              // Check for consecutive repeated digits (more than 6 times)
+              if (/(\d)\1{6,}/.test(value)) {
+                swal("แจ้งเตือน!", "เบอร์โทรศัพท์ไม่สามารถมีตัวเลขที่ซ้ำกันมากกว่า 6 ตัวได้!", "error");
+                inputField.value = ""; // Clear the input
+              } else if (/(\d{2,})\1+/.test(value)) {
+                swal("แจ้งเตือน!", "เบอร์โทรศัพท์ไม่สามารถมีลำดับตัวเลขที่ซ้ำกันได้!", "error");
+                inputField.value = ""; // Clear the input
+              } else {
+                inputField.value = value; // Set the cleaned value back to the input
+              }
+            }
+          }
+          
+        
+          // Real-time validation as the user types
+          if (telephoneInput) {
+            telephoneInput.oninput = function () {
+              // Remove any characters that are not digits
+              this.value = this.value.replace(/\D/g, "");
+            };
+        
+            telephoneInput.onblur = function () {
+              validateTelephone(telephoneInput);
+            };
+          }
+        
+          // Validation on form submission
+          var form = document.querySelector("form");
+          if (form) {
+            form.onsubmit = function (event) {
+              validateTelephone(telephoneInput);
+              // Check again in case validation was bypassed
+              if (telephoneInput.value.length !== 10) {
+                swal("แจ้งเตือน!", "เบอร์โทรศัพท์ต้องมี 10 หลัก!", "error");
+                event.preventDefault(); // Prevent form submission
+              }
+            };
+          }
+          // if(submit && this.onclick){
+          //    swal("สำเร็จ!", "รับโค้ด ********* !!", "success");
+          // }
+        
+          var AgeInput = document.querySelector('input[name="age"]');
+        
+          // Function to validate the Age input
+          function validateAge(inputField) {
+            // Remove any characters that are not digits
+            var value = inputField.value.replace(/\D/g, "");
+          
+            // Check if the value is between 1 and 3 digits long
+            if (value.length < 1 || value.length > 3) {
+              swal("แจ้งเตือน!", "กรุณากรอกข้อมูลด้วย!", "error");
+              inputField.value = value.slice(0, 3); // Truncate to 3 digits if necessary
+            } else {
+              inputField.value = value; // Set the cleaned value back to the input
+            }
+          }
+          
+          // Real-time validation as the user types
+          if (AgeInput) {
+            AgeInput.oninput = function () {
+              this.value = this.value.replace(/\D/g, ""); // Remove any non-digits
+            };
+          
+            AgeInput.onblur = function () {
+              validateAge(AgeInput);
+            };
+          }
+          
+          // Validation on form submission
+          var form = document.querySelector("form");
+          if (form) {
+            form.onsubmit = function (event) {
+              validateAge(AgeInput);
+              // Check again with correct logic
+              if (AgeInput.value.length <= 1 || AgeInput.value.length >= 3) {
+                swal("แจ้งเตือน!", "กรอกอายุเพียง 2 หลักเท่านั้น!", "error");
+                event.preventDefault(); // Prevent form submission
+              }
+            };
+          }
+
+        });
+        // รูป
+        
+    // JavaScript to change the icon on file attachment
+    const fileInput = document.getElementById('image');
+    const iconImg = document.getElementById('copyButton');
+
+    fileInput.addEventListener('change', function() {
+      // Check if a file is attached
+      if (this.files && this.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+          // Change the icon source to a preview of the attached image
+          iconImg.src = e.target.result;
+        }
+
+        reader.readAsDataURL(this.files[0]);
+      }
+    });
+        // รูปพื้นหลัง input
+        
+        const nameInput = document.getElementById('name');
+        const surnameInput = document.getElementById('surname');
+        const phoneInput = document.getElementById('phone');
+        const ageInput = document.getElementById('age');
+        const merchantInput = document.getElementById('merchant');
+
+        nameInput.addEventListener('input', changeBackground);
+        surnameInput.addEventListener('input', changeBackground);
+        phoneInput.addEventListener('input', changeBackground);
+        ageInput.addEventListener('input', changeBackground);
+        merchantInput.addEventListener('input', changeBackground);
+        
+        function changeBackground() {
+        if (this.value.trim() !== '') {
+          this.style.backgroundImage = 'url("https://cdn.discordapp.com/attachments/1175991933227782165/1179782034856624188/41ef19da-e20a-41b8-9b72-3da7a22ed84c.png?ex=657b08a4&is=656893a4&hm=c1ddda556eadd5bfb9886d73b0f85dc9df7c6331379ea783a240a495a42c0c59&")';
+          this.style.backgroundSize = '150%';
+          this.style.backgroundRepeat = 'no-repeat';
+          this.style.color = '#000000';
+          this.style.padding = '2px 78px 10px 40px';
+          this.style.borderRadius = '5px';
+          this.style.fontFamily = "'Prompt', sans-serif";        
+        } else {
+          this.style.backgroundImage = 'url("https://cdn.discordapp.com/attachments/1175991933227782165/1179760957526909029/AlertInput.png?ex=657af503&is=65688003&hm=c8988221d053b85512895858f3feb03f9e6da02c5334c48d5770d888c21d696f&")';        
+          this.style.backgroundSize = '150%';
+          this.style.backgroundRepeat = 'no-repeat';
+          this.style.color = '#000000';
+          this.style.padding = '2px 78px 10px 40px';
+          this.style.borderRadius = '5px';
+          this.style.fontFamily = "'Prompt', sans-serif";
+        }
+        function copyToClipboard() {
+          var copyIcon = document.getElementById('copycode');
+          copyIcon.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default action
+              codeInput.select(); // Select the text in the input
+              document.execCommand('copy'); // Copy the text
+              // Provide feedback to the user that the text was copied, if necessary
+          });
+        }
+    };
+    function copyToClipboard() {
+      // Get the input element that contains the code
+      var codeInput = document.getElementById("codeInput");
+    
+      // Use the Clipboard API to copy the value of the input field
+      navigator.clipboard.writeText(codeInput.value).then(function() {
+        console.log('Text successfully copied to clipboard');
+        // You can display a message to the user indicating the copy was successful
+        // For example, you can temporarily change the background color of the input or display a tooltip
+      }).catch(function(error) {
+        console.error('Error copying text to clipboard', error);
+        // You can display some error message to the user here
+      });
+    }
+    
+    // Add event listener to the copy icon
+    document.addEventListener('DOMContentLoaded', (event) => {
+      var copyIcon = document.getElementById("copycode");
+      if(copyIcon) {
+        copyIcon.addEventListener('click', copyToClipboard);
+      }
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+      // Function to copy code to clipboard
+      function copyToClipboard() {
+        var codeInput = document.getElementById("codeInput");
+        navigator.clipboard.writeText(codeInput.value).then(function() {
+          console.log('Text successfully copied to clipboard');
+          // Optional: Display a message to the user indicating the copy was successful
+        }).catch(function(error) {
+          console.error('Error copying text to clipboard', error);
+          // Optional: Display an error message to the user
+        });
+      }
+    
+      // Function to close the modal
+      function closeModal() {
+        var modal = document.getElementById('myModal');
+        modal.style.display = 'none';
+      }
+    
+      // Event listener for the button
+      var saveAndConfirmButton = document.getElementById('saveAndConfirmButton');
+      if(saveAndConfirmButton) {
+        saveAndConfirmButton.addEventListener('click', function() {
+          copyToClipboard();
+          closeModal();
+        });
+      }
+    });
+
+        
+    </script>
+      
+
+    <!-- <span href="{{ url_for('logout') }}">Logout</span> -->
+
+    <!-- The Modal -->
+    <!-- <div id="myModal" class="modal">
+      Modal content
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close">&times;</span>
+          <h2>กดรับโค้ด</h2> 
+        </div>
+        <div class="modal-body">
+          <input type="text" class="modal-input" value="{{ code }}" readonly>
+          <button class="modal-button">บันทึก</button>
+        </div>
+      </div>
+    </div> -->
+    
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+      crossorigin="anonymous"></script>
+    <!-- <script src="/~1/MyBEER/json/mybeerCode.js"></script> -->
+</body>
+</html>
